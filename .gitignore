@@ -1,0 +1,16 @@
+node_modules/
+.vercel/
+.env*
+!.env.example
+client.env
+deployment.json
+test-results/
+clipboard/.env
+clipboard/*.sqlite*
+infrastructure-backup/
+supabase/.branches/
+supabase/.temp/
+
+.vercel
+.env*
+supabase/setup-status.json

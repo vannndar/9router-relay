@@ -1,0 +1,16 @@
+.git/
+.env*
+client.env
+deployment.json
+test/
+scripts/
+README.md
+node_modules/
+clipboard/
+infrastructure-backup/
+
+.before/
+paste-change-manifest.json
+scripts/deploy-paste.ps1
+supabase/
+paste-*-preview.jpg

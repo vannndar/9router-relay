@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Papan teks bersama antarperangkat, tanpa login. Dengan chat AI sementara saat diperlukan.">
+  <title>Papan teks &amp; Chat AI — Solver.me</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23121212'/%3E%3Cpath d='M9 11h9a4 4 0 0 1 0 8h-3l-5 4v-4H9z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/chat.css">
+  <link rel="stylesheet" href="/paste.css">
+  <script type="module" src="/chat.mjs"></script>
+  <script type="module" src="/paste.mjs"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="brand" aria-label="Relay, mulai ulang">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 6h10a4 4 0 0 1 0 8h-3l-5 4v-4H5Z"/><path d="M12 9h5M12 11h3"/></svg></span>
+      <span>solver<span class="brand-dot">.me</span></span>
+    </a>
+    <div class="header-actions">
+      <span class="session-badge"><span></span><span id="sessionLabel">Tanpa login</span></span>
+      <button id="settingsButton" class="icon-button" aria-label="Pengaturan koneksi" title="Pengaturan koneksi" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></svg></button>
+    </div>
+  </header>
+
+  <nav class="app-tabs" aria-label="Fitur Solver.me"><a href="/" class="app-tab">Block Blast</a><a href="/paste" id="pasteTab" class="app-tab active" aria-controls="pastePanel" aria-current="page">Papan teks</a><a href="/chat" id="chatTab" class="app-tab" aria-controls="chatPanel">Chat AI <span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a></nav>
+
+  <main id="pastePanel" class="paste-workspace">
+    <header class="paste-heading"><h1>Papan teks</h1><span id="pasteSyncStatus" class="paste-sync-status" role="status">Belum terhubung</span></header>
+    <section class="room-panel" aria-label="Ruang bersama">
+      <form id="joinRoomForm" autocomplete="off">
+        <label class="room-label" for="joinRoomInput">Kode ruang</label>
+        <div class="room-entry">
+          <input id="joinRoomInput" placeholder="000 000" aria-label="Kode atau tautan ruang" autocomplete="off" spellcheck="false" autofocus>
+          <button type="submit" class="paste-primary">Buka ruang</button>
+          <button id="newRoomButton" type="button" class="paste-secondary"><span aria-hidden="true">+</span> Generate room</button>
+        </div>
+      </form>
+      <div class="room-tools"><span class="active-room"><span class="room-dot" aria-hidden="true"></span><span id="roomName">Belum ada ruang</span></span><div class="room-actions"><button id="copyCodeButton" type="button" class="paste-quiet" disabled>Salin kode</button><button id="copyRoomButton" type="button" class="paste-quiet" disabled>Salin tautan</button></div></div>
+      <input id="roomLinkFallback" class="room-link-fallback" aria-label="Kode atau tautan untuk disalin" readonly hidden>
+    </section>
+    <p id="pasteNotice" class="paste-notice" role="status" hidden></p>
+    <form id="pasteForm" class="paste-composer" autocomplete="off">
+      <label class="subject-label" for="pasteSubject">Subject <span>Opsional · 120 karakter</span></label>
+      <input id="pasteSubject" class="paste-subject" placeholder="Memo 1" maxlength="120" disabled>
+      <label class="sr-only" for="pasteInput">Isi memo</label>
+      <textarea id="pasteInput" placeholder="Tulis atau tempel teks…" rows="5" maxlength="1000000" aria-describedby="pasteRequirements pasteSize" required disabled></textarea>
+      <div class="paste-requirements"><span id="pasteRequirements">Teks maks. 1 MB · File maks. 5 MB</span><output id="pasteSize" aria-label="Ukuran teks">0 B</output></div>
+      <input id="pasteFile" type="file" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf,.txt,.csv,.png,.jpg,.jpeg,.webp,.gif" aria-label="Pilih file" hidden disabled>
+      <div id="selectedFile" class="selected-file" hidden><div><span id="selectedFileName"></span><span id="selectedFileSize"></span></div><button id="clearFileButton" type="button" aria-label="Lepas lampiran">×</button></div>
+      <div class="paste-composer-footer"><div class="paste-compose-tools"><button id="chooseFileButton" type="button" class="paste-attach" disabled><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 12 6-6a3 3 0 0 1 4 4l-8 8a5 5 0 0 1-7-7l8-8m-4 12 7-7"/></svg> Lampirkan file</button><label class="expiry-control" for="pasteExpiry">Hapus setelah <select id="pasteExpiry" disabled><option value="600">10 menit</option><option value="3600" selected>1 jam</option><option value="86400">24 jam</option></select></label></div><button id="publishPasteButton" type="submit" class="paste-primary" disabled><span id="publishLabel">Kirim memo</span><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div>
+    </form>
+    <div class="paste-list-header"><h2>Memo <span id="pasteCount">0</span></h2><div class="paste-search"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><label class="sr-only" for="pasteSearch">Cari memo</label><input id="pasteSearch" type="search" placeholder="Cari memo" autocomplete="off" disabled><button id="clearSearchButton" type="button" aria-label="Hapus pencarian" hidden>×</button></div></div>
+    <section id="pasteList" class="paste-list" aria-label="Memo di ruang ini" aria-live="polite"><div class="paste-empty">Belum ada memo</div></section>
+  </main>
+
+  <main id="chatPanel" class="workspace" hidden>
+    <div class="chat-toolbar">
+      <label class="model-control" for="modelSelect"><span class="model-dot" id="modelDot"></span><select id="modelSelect" aria-label="Model AI" disabled><option>Belum terhubung</option></select></label>
+      <div class="chat-toolbar-actions"><button id="chatConnectButton" class="text-button">Hubungkan</button><button id="newChatButton" class="text-button" disabled><span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></span> Chat baru</button></div>
+    </div>
+
+    <section id="welcome" class="welcome">
+      <div class="welcome-symbol" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 8v32M8 24h32M13 13l22 22M13 35l22-22"/><circle cx="24" cy="24" r="9"/></svg></div>
+      <p class="eyebrow">SEDIKIT RUANG UNTUK BERTANYA</p>
+      <h1>Tanya sebentar.<br><span>Lanjutkan harimu.</span></h1>
+      <p class="welcome-description">Untuk ide yang tiba-tiba, pertanyaan kecil,<br class="desktop-break"> atau bantuan saat bekerja.</p>
+      <div class="suggestions" aria-label="Contoh pertanyaan">
+        <button class="suggestion" data-prompt="Jelaskan dengan sederhana tentang "><span class="suggestion-icon" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18h6M10 21h4M8 14a6 6 0 1 1 8 0c-1 1-1 2-1 2H9s0-1-1-2Z"/></svg></span><strong>Jelaskan sesuatu</strong><span>Buat hal rumit lebih sederhana <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span></button>
+        <button class="suggestion" data-prompt="Bantu saya menyusun pesan tentang "><span class="suggestion-icon" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15l-1 6Z"/></svg></span><strong>Bantu menulis</strong><span>Temukan kata yang pas <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span></button>
+        <button class="suggestion" data-prompt="Tolong ringkas teks berikut menjadi poin-poin penting:\n\n"><span class="suggestion-icon" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></span><strong>Ringkas teks</strong><span>Langsung ke bagian penting <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></span></button>
+      </div>
+    </section>
+
+    <section id="messages" class="messages" aria-label="Percakapan" aria-live="polite" aria-relevant="additions" hidden></section>
+
+    <div class="composer-area">
+      <p id="notice" class="notice" role="status" hidden></p>
+      <form id="chatForm" class="composer" autocomplete="off">
+        <label class="sr-only" for="promptInput">Pertanyaanmu</label>
+        <textarea id="promptInput" placeholder="Tulis pertanyaanmu di sini…" rows="2" maxlength="30000" disabled></textarea>
+        <div class="composer-footer">
+          <span class="keyboard-hint">Enter untuk kirim <span>·</span> Shift + Enter untuk baris baru</span>
+          <button id="stopButton" class="stop-button" type="button" hidden><span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></span> Hentikan</button>
+          <button id="sendButton" class="send-button" type="submit" aria-label="Kirim pertanyaan" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+        </div>
+      </form>
+      <p class="privacy-note"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 2 6 3v5c0 4-6 7-6 7S4 14 4 10V5Z"/><path d="m7 9 2 2 4-4"/></svg> Riwayat hanya di tab ini. Muat ulang untuk menghapus.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer"><span id="footerNote">Sedikit ruang untuk melanjutkan pekerjaanmu.</span><span>relay. / made for the in-between</span></footer>
+
+  <dialog id="connectionDialog" aria-labelledby="connectionTitle">
+    <button id="closeDialogButton" class="icon-button dialog-close" aria-label="Tutup pengaturan"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    <span class="connection-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg></span>
+    <p class="eyebrow">SELAMAT DATANG DI RELAY</p>
+    <h2 id="connectionTitle">Siap untuk bertanya?</h2>
+    <p class="dialog-description">Masukkan token relay untuk mulai. Token hanya digunakan selama tab ini terbuka.</p>
+    <form id="connectionForm" autocomplete="off">
+      <label for="tokenInput">Token relay</label>
+      <div class="token-input-wrap"><input id="tokenInput" type="password" placeholder="Masukkan API key relay" autocomplete="off" spellcheck="false" autocapitalize="none" data-lpignore="true" data-1p-ignore required><button id="revealButton" type="button" aria-label="Tampilkan token">Lihat</button></div>
+      <p id="connectionError" class="connection-error" role="alert" hidden></p>
+      <button id="connectButton" type="submit" class="connect-button">Hubungkan <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button>
+    </form>
+    <button id="disconnectButton" class="disconnect-button" hidden>Putuskan koneksi dan hapus sesi</button>
+    <p class="connection-footnote">Chat dan token tidak disimpan di browser atau database aplikasi ini.</p>
+  </dialog>
+</body>
+</html>

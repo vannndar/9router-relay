@@ -1,0 +1,119 @@
+/* Paste board. Color and spacing stay local to this page. */
+body.paste-page {
+  --paste-bg:#141618; --paste-panel:#1c1f22; --paste-editor:#202428;
+  --paste-line:#3c4248; --paste-text:#f2f2ee; --paste-muted:#b9c0c7;
+  --paste-accent:#bad9cd; --paste-accent-ink:#172b23;
+  background:var(--paste-bg); color:var(--paste-text);
+}
+.paste-page .site-header { width:min(1024px,calc(100% - 64px)); height:82px; }
+.paste-page .brand { font-size:27px; letter-spacing:-1px; }
+.paste-page .brand-mark { background:#2a3a34; color:#d6ede3; width:36px; height:36px; border-radius:11px; }
+.paste-page .brand-dot { color:var(--paste-muted); }
+.paste-page .session-badge,.paste-page .site-footer { display:none; }
+.paste-page .app-tabs { width:min(960px,calc(100% - 64px)); margin-bottom:0; border-color:var(--paste-line); }
+.paste-page .app-tab { color:var(--paste-muted); padding:14px 18px; font-size:14px; }
+.paste-page .app-tab.active { color:var(--paste-text); border-color:var(--paste-accent); }
+.paste-workspace { width:min(960px,calc(100% - 64px)); margin:32px auto 64px; flex:1; }
+.paste-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:22px; }
+.paste-heading h1 { margin:0; font-size:26px; font-weight:600; letter-spacing:-.7px; }
+.paste-sync-status { font-size:12px; color:var(--paste-muted); display:flex; align-items:center; gap:7px; }
+.paste-sync-status::before { content:""; width:6px; height:6px; border-radius:50%; background:#b6c3bb; }
+.paste-sync-status.offline::before { background:#e6b77f; }
+.room-panel { padding:22px 24px 15px; background:var(--paste-panel); border:1px solid var(--paste-line); border-radius:16px; }
+.room-label { display:block; font-size:14px; font-weight:600; margin-bottom:11px; }
+.room-entry { display:flex; align-items:stretch; gap:10px; }
+.room-entry input { min-width:0; flex:1; width:100%; border:1px solid #59616a; border-radius:10px; background:var(--paste-bg); color:var(--paste-text); font:500 29px/1.4 "Segoe UI",sans-serif; font-variant-numeric:tabular-nums; letter-spacing:5px; padding:12px 16px; }
+.room-entry input::placeholder { color:#9da7b1; opacity:1; }
+.room-entry input:focus { outline:2px solid var(--paste-accent); outline-offset:2px; }
+.paste-primary,.paste-secondary { display:inline-flex; gap:12px; justify-content:center; align-items:center; border:1px solid transparent; border-radius:10px; padding:12px 18px; font-size:14px; font-weight:600; white-space:nowrap; transition:background .15s,border-color .15s; }
+.paste-page .paste-primary { background:var(--paste-accent); color:var(--paste-accent-ink); }
+.paste-page .paste-primary:hover:not(:disabled) { background:#d1eadf; }
+.paste-secondary { background:#2a2e33; border-color:#50575f; color:var(--paste-text); }
+.paste-secondary span { font-size:21px; font-weight:400; line-height:1; }
+.paste-secondary:hover { background:#353b41; border-color:#727d86; }
+.room-tools { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:14px; min-height:30px; }
+.active-room { display:flex; gap:8px; align-items:center; font-size:12px; color:var(--paste-muted); font-variant-numeric:tabular-nums; min-width:0; }
+#roomName { overflow-wrap:anywhere; }
+.room-dot { width:6px; height:6px; border-radius:50%; background:#77828b; flex:none; }
+.room-panel.connected .room-dot { background:var(--paste-accent); }
+.room-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:4px; }
+.paste-quiet { border:0; background:transparent; color:#d4dce2; font-size:12px; padding:7px 9px; border-radius:6px; }
+.paste-quiet:hover:not(:disabled) { background:#30363c; color:white; }
+.room-link-fallback { display:block; width:100%; margin-top:10px; border:1px solid var(--paste-line); border-radius:8px; padding:10px; background:var(--paste-bg); color:var(--paste-text); font-size:13px; }
+.paste-composer { background:var(--paste-editor); border:1px solid var(--paste-line); border-radius:16px; padding:23px 24px 17px; margin-top:20px; }
+.subject-label { display:block; color:var(--paste-muted); font-size:12px; margin-bottom:6px; }
+.subject-label span { float:right; font-size:11px; font-weight:400; }
+.paste-requirements { display:flex; justify-content:space-between; gap:12px; color:var(--paste-muted); font-size:12px; padding:0 0 12px; }
+.paste-requirements output { font-variant-numeric:tabular-nums; white-space:nowrap; }
+.paste-requirements.over-limit { color:#ffbdb8; }
+.paste-expand { border:1px solid var(--paste-line); background:transparent; color:var(--paste-text); border-radius:7px; padding:7px 10px; font-size:12px; margin:0 0 14px; }
+.paste-compose-tools { display:flex; flex-wrap:wrap; align-items:center; gap:14px; }
+.paste-attach { display:flex; align-items:center; gap:7px; background:transparent; border:1px solid var(--paste-line); color:var(--paste-text); padding:8px 10px; border-radius:7px; font-size:12px; }
+.selected-file,.memo-file { display:flex; justify-content:space-between; align-items:center; gap:12px; border:1px solid var(--paste-line); background:rgba(0,0,0,.12); border-radius:9px; padding:12px 14px; margin:0 0 15px; }
+.selected-file>div,.memo-file>div { display:flex; flex-direction:column; gap:4px; min-width:0; }
+#selectedFileName,.memo-file-name { overflow-wrap:anywhere; font-size:14px; color:var(--paste-text); }
+#selectedFileSize,.memo-file-size { font-size:12px; color:var(--paste-muted); }
+.selected-file button { background:transparent; border:0; color:var(--paste-text); font-size:23px; padding:3px 7px; }
+.memo-file { margin:14px 0 16px; }
+.memo-download { background:transparent; color:var(--paste-text); border:1px solid #66716e; border-radius:7px; padding:9px 12px; font-size:12px; flex:none; }
+.paste-subject { display:block; width:100%; background:transparent; border:0; color:var(--paste-text); padding:4px 0 12px; font-size:20px; font-weight:600; outline:none; }
+.paste-subject::placeholder { color:#c4cbd1; opacity:1; }
+.paste-composer textarea { display:block; width:100%; min-height:148px; max-height:500px; resize:vertical; background:transparent; border:0; color:var(--paste-text); font:400 16px/1.7 "Segoe UI",sans-serif; outline:none; padding:8px 0 16px; }
+.paste-composer textarea::placeholder { color:#abb5bf; opacity:1; }
+.paste-composer:focus-within { border-color:#a7c1b6; }
+.paste-composer input:focus-visible,.paste-composer textarea:focus-visible { box-shadow:inset 0 -2px var(--paste-accent); }
+.paste-composer-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; padding-top:15px; border-top:1px solid var(--paste-line); }
+.expiry-control { color:var(--paste-muted); font-size:12px; display:flex; align-items:center; gap:8px; }
+.expiry-control select { background:#30363b; color:var(--paste-text); border:1px solid #505860; border-radius:7px; padding:7px 9px; font-size:12px; }
+.paste-page button:disabled { opacity:.55; }
+.paste-composer input:disabled,.paste-composer textarea:disabled { opacity:.7; }
+.paste-page button:focus-visible,.paste-page a:focus-visible,.paste-page select:focus-visible { outline:2px solid var(--paste-accent); outline-offset:3px; }
+.paste-notice { padding:11px 15px; border:1px solid #4d6b5f; border-radius:10px; background:#23332c; color:#dbefe4; font-size:13px; line-height:1.5; margin:14px 0 0; }
+.paste-notice.error { border-color:#9c6868; background:#382526; color:#ffdcdb; }
+.paste-list-header { display:flex; justify-content:space-between; align-items:center; gap:18px; margin:30px 0 16px; }
+.paste-list-header h2 { display:flex; align-items:center; gap:9px; margin:0; font-size:16px; font-weight:600; }
+#pasteCount { color:var(--paste-muted); font-size:12px; font-weight:400; background:#292e33; padding:3px 7px; border-radius:6px; }
+.paste-search { display:flex; align-items:center; gap:9px; width:260px; max-width:65%; padding:9px 12px; border:1px solid #4b535b; border-radius:9px; background:#1b1e21; color:var(--paste-muted); }
+.paste-search:focus-within { border-color:var(--paste-accent); }
+.paste-search input { background:transparent; color:var(--paste-text); border:0; outline:none; min-width:0; width:100%; font-size:13px; }
+.paste-search input::placeholder { color:#b4bfc8; }
+.paste-search input::-webkit-search-cancel-button { -webkit-appearance:none; }
+.paste-search button { border:0; background:none; color:var(--paste-muted); padding:0 2px; font-size:20px; line-height:1; }
+.paste-empty { color:var(--paste-muted); text-align:center; padding:40px 20px; border:1px dashed #48515a; border-radius:13px; font-size:14px; }
+.paste-card { background:var(--paste-panel); border:1px solid var(--paste-line); border-radius:14px; padding:19px 22px 16px; margin-bottom:12px; }
+.paste-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+.paste-card h3 { font-size:17px; line-height:1.5; font-weight:600; letter-spacing:-.2px; margin:2px 0 0; overflow-wrap:anywhere; }
+.paste-card-actions { display:flex; gap:3px; flex:none; }
+.paste-card-actions button { background:none; border:0; color:#c4d0d9; font-size:12px; padding:7px 9px; border-radius:6px; }
+.paste-card-actions button:hover { background:#30383e; color:white; }
+.paste-card-actions button:last-child:hover { color:#ffbdb8; background:#492c2c; }
+.paste-text { font:400 15px/1.75 "Segoe UI",sans-serif; color:#e4e8eb; white-space:pre-wrap; overflow-wrap:anywhere; margin:12px 0 16px; max-height:360px; overflow:auto; tab-size:4; }
+.paste-card-time { display:block; color:#b6bfc7; font-size:12px; border-top:1px solid #343b41; padding-top:12px; }
+@media(max-width:640px) {
+  .paste-page .site-header { width:calc(100% - 32px); height:68px; }
+  .paste-page .brand { font-size:25px; }
+  .paste-page .app-tabs,.paste-workspace { width:calc(100% - 32px); }
+  .paste-page .app-tab { padding:12px 13px; font-size:13px; }
+  .paste-workspace { margin-top:25px; }
+  .paste-heading h1 { font-size:23px; }
+  .paste-sync-status { font-size:11px; }
+  .room-panel { padding:18px 16px 12px; }
+  .room-entry { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; }
+  .room-entry input { grid-column:1 / -1; font-size:30px; padding:12px 15px; }
+  .room-entry .paste-primary,.room-entry .paste-secondary { padding:12px 15px; }
+  .room-tools { align-items:flex-start; }
+  .room-actions { gap:0; }
+  .paste-quiet { padding:6px; font-size:11px; }
+  .paste-composer { padding:19px 17px 15px; }
+  .paste-composer textarea { min-height:154px; }
+  .paste-composer-footer { flex-wrap:wrap; }
+  .paste-primary { font-size:13px; padding:12px 14px; }
+  .expiry-control { gap:6px; }
+  .paste-list-header { gap:10px; }
+  .paste-search { width:210px; }
+  .paste-card { padding:16px; }
+  .paste-card-top { flex-wrap:wrap; gap:4px; }
+  .paste-card h3 { flex:1; min-width:120px; }
+  .paste-card-actions button { padding:7px; }
+}
+@media(prefers-reduced-motion:reduce) { .paste-primary,.paste-secondary { transition:none; } }

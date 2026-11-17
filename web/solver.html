@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Cari urutan langkah Block Blast dari screenshot. Periksa papan, temukan ruang, dan lanjutkan permainan. Tanpa login.">
+  <title>Solver.me — Satu langkah lebih jauh</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23121212'/%3E%3Cpath d='M8 8h7v7H8zm9 0h7v7h-7zm-9 9h7v7H8z' fill='%233b82f6'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/solver.css">
+  <script type="module" src="/solver.mjs"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Solver.me, halaman utama"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>solver<span class="brand-tail">.me</span></a>
+    <nav aria-label="Navigasi utama"><a href="/" aria-current="page">Block Blast</a><a href="/paste">Papan teks</a><a href="/chat">Chat AI <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a></nav>
+    <span class="private-badge"><span></span>Tanpa login</span>
+  </header>
+  <main>
+    <h1 id="pageTitle" class="sr-only">Block Blast Solver</h1>
+    <div class="workspace">
+      <div class="input-column">
+        <section class="workspace-intro" aria-label="Block Blast Classic dan alur penggunaan">
+          <div class="hero-side"><div class="mini-board" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><p>Setiap balok punya tempat.<br>Kadang, urutannya yang penting.</p><span class="mode-pill">BLOCK BLAST · CLASSIC 8 × 8</span></div>
+          <div class="workflow-label"><span><b>01</b> Unggah <i><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></i> <b>02</b> Periksa <i><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></i> <b>03</b> Lanjutkan</span></div>
+        </section>
+      <section class="card input-card" aria-labelledby="inputTitle">
+        <div class="card-heading"><div class="step-number">01</div><div><h2 id="inputTitle">Mulai dari screenshot</h2><p>Seluruh papan dan balok yang tersisa.</p></div></div>
+        <label class="upload-zone" id="dropZone" for="screenshotInput"><span class="upload-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="5" y="5" width="22" height="22" rx="5"/><circle cx="12" cy="12" r="2"/><path d="m6 23 7-7 5 5 3-3 5 5"/><path d="M23 1v8M19 5h8"/></svg></span><strong>Pilih screenshot</strong><span>atau tarik gambar ke sini</span><small>PNG, JPG, WebP · maks. 15 MB</small><input id="screenshotInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+        <p class="input-tip">Di komputer, kamu juga bisa menempel gambar dengan <kbd>Ctrl</kbd> + <kbd>V</kbd>.</p>
+        <div id="imageWorkspace" hidden>
+          <div class="image-heading"><span id="imageName"></span><button id="removeImage" class="text-button" type="button">Hapus gambar</button></div>
+          <div class="image-frame"><canvas id="imageCanvas" aria-label="Screenshot. Pilih area yang ingin dibaca ulang dengan menggeser pada gambar."></canvas></div>
+          <p class="crop-label">Area kurang tepat? Pilih, lalu geser di gambar.</p>
+          <div class="crop-controls" aria-label="Pilih area potong"><button type="button" data-crop="board" aria-pressed="true">Papan</button><button type="button" data-crop="0" aria-pressed="false">Balok 1</button><button type="button" data-crop="1" aria-pressed="false">Balok 2</button><button type="button" data-crop="2" aria-pressed="false">Balok 3</button></div>
+          <button class="secondary-button full-width" id="detectAgain" type="button">Baca ulang semua area <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5"/></svg></span></button>
+        </div>
+        <p id="imageNotice" class="notice" role="status" hidden></p>
+        <div class="input-divider"><span>atau mulai tanpa gambar</span></div>
+        <div class="manual-actions"><button class="secondary-button" id="manualButton" type="button">Isi papan manual <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></button><button class="text-button" id="exampleButton" type="button">Coba contoh</button></div>
+        <div class="local-note"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 2 6 3v5c0 4-6 7-6 7S4 14 4 10V5Z"/><path d="m7 9 2 2 4-4"/></svg><p>Gambarmu tetap di perangkat ini.<br>Tidak dikirim atau disimpan di server.</p></div>
+      </section>
+      </div>
+      <section class="card editor-card" aria-labelledby="editorTitle">
+        <div class="card-heading"><div class="step-number">02</div><div><h2 id="editorTitle">Periksa papan &amp; balok</h2><p>Klik atau seret beberapa sel untuk mengisi. Mulai dari sel terisi untuk menghapus.</p></div><button id="clearBoard" class="text-button heading-action" type="button">Kosongkan</button></div>
+        <div class="board-area"><div class="board-axis top-axis" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="board-axis left-axis" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div id="board" class="game-board" role="group" aria-label="Editor papan 8 kali 8"></div></div>
+        <div class="board-meta"><span><i class="legend-filled"></i>Terisi <b id="filledCount">0</b></span><span><i class="legend-empty"></i>Kosong <b id="emptyCount">64</b></span><span class="board-note">Baris dari atas; kolom dari kiri</span></div>
+        <div class="piece-section-heading"><h3>Balok yang tersisa</h3><span>Seret untuk menggambar sesuai arah di layar.</span></div>
+        <div id="pieceEditors" class="piece-editors"></div>
+        <div class="combo-control"><div><label for="comboChance">Sisa kesempatan combo</label><p id="comboHint">Minimal satu pecahan dalam tiga penempatan.</p></div><select id="comboChance" aria-describedby="comboHint"><option value="3" selected>3 kali (default)</option><option value="2">2 kali</option><option value="1">1 kali</option></select></div>
+        <label class="review-control"><input id="reviewedInput" type="checkbox"><span>Papan dan bentuk balok sudah sesuai screenshot.</span></label>
+        <div class="solve-actions"><button id="solveButton" class="primary-button" type="button">Cari langkah terbaik <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button><button id="cancelButton" class="secondary-button" type="button" hidden>Hentikan</button></div>
+        <p id="solveNotice" class="notice" role="status" hidden></p>
+        <p class="solve-caption">Utamakan ruang untuk bertahan, satu giliran setiap kali.</p>
+      </section>
+    </div>
+    <section class="card result-card" id="results" aria-labelledby="resultTitle" hidden>
+      <div class="card-heading"><div class="step-number">03</div><div><p class="eyebrow">ADA LANGKAH BERIKUTNYA</p><h2 id="resultTitle">Ikuti urutannya.</h2></div><span class="result-badge" id="resultBadge"></span></div>
+      <p class="result-summary" id="resultSummary"></p>
+      <div class="result-layout"><div><div id="resultBoard" class="game-board result-board" role="img" aria-label="Pratinjau langkah"></div><div class="preview-controls"><button id="previousStep" class="secondary-button" type="button" aria-label="Langkah sebelumnya">Sebelumnya</button><span id="previewLabel" aria-live="polite"></span><button id="nextStep" class="secondary-button" type="button" aria-label="Langkah berikutnya">Berikutnya</button></div></div><div><ol class="move-list" id="moveList"></ol><button id="finalPreview" class="text-button" type="button">Lihat papan akhir <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></button><div class="result-note"><strong>Ruang untuk kesempatan berikutnya.</strong><p>Rekomendasi ini memakai balok yang terlihat. Balok giliran berikutnya belum diketahui.</p></div><button id="useFinalBoard" class="secondary-button" type="button">Lanjut dari papan akhir <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></button></div></div>
+      <p class="result-stats" id="resultStats" hidden></p>
+    </section>
+    <section class="how-it-works" aria-labelledby="rulesTitle"><div><p class="eyebrow">KENALI PAPANNYA</p><h2 id="rulesTitle">Sederhana aturannya.<br>Banyak kemungkinan langkahnya.</h2></div><div class="rule"><span>01 / TEMPATKAN</span><p>Pasang balok di sel kosong, sesuai bentuk dan arahnya. Tidak diputar.</p></div><div class="rule"><span>02 / BUKA RUANG</span><p>Baris atau kolom yang penuh terhapus bersamaan. Balok lain tetap di tempat.</p></div><div class="rule"><span>03 / LIHAT URUTAN</span><p>Balok kecil bisa membuka jalan untuk yang besar. Periksa semuanya sebelum bergerak.</p></div></section>
+    <p class="source-note">Untuk Classic 8 × 8, tanpa booster atau target Adventure. <a href="https://play.google.com/store/apps/details?id=com.block.juggle" target="_blank" rel="noopener noreferrer">Aturan dasar dari Hungry Studio <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></a></p>
+  </main>
+  <footer><span>Sedikit ruang untuk kemungkinan baru.</span><span>solver.me <i>/</i> dibuat untuk langkah berikutnya</span></footer>
+  <noscript><p class="noscript">Aktifkan JavaScript agar solver dapat membaca gambar dan menghitung langkah di perangkatmu. <a href="/paste">Buka papan teks</a>.</p></noscript>
+</body>
+</html>

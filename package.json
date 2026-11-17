@@ -1,0 +1,22 @@
+﻿{
+  "name": "9router-vercel-relay",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "node --env-file=.env.local scripts/dev.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
+    "smoke": "node --env-file=.env.local scripts/smoke.mjs",
+    "check:chat": "node --env-file=.env.local scripts/check-chat.mjs",
+    "check:paste": "node scripts/check-paste.mjs",
+    "check:paste-ui": "node scripts/check-paste-ui.mjs",
+    "check:supabase-sql": "node scripts/check-supabase-sql.mjs",
+    "deploy": "vercel deploy --prod"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.3"
+  }
+}
